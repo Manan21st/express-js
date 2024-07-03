@@ -49,3 +49,14 @@ app.put('/courses/:id', (req, res) => {
     course.name = req.body.name;
     res.json(courses);
 });
+
+app.delete('/courses/:id', (req, res) => {
+    const courseId = parseInt(req.params.id);
+    const courseIndex = courses.findIndex(c => c.id === courseId);
+    if (courseIndex === -1) {
+        return res.status(404).send('Course not found');
+    }
+    courses.splice(courseIndex, 1);
+    res.json(courses);
+});
+
