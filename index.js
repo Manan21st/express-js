@@ -32,7 +32,20 @@ app.get('/instructors', (req, res) => {
 });
 
 app.post('/courses', (req, res) => {
-    const newCourse = req.body;
+    let newCourse = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
     courses.push(newCourse);
+    res.json(courses);
+});
+
+app.put('/courses/:id', (req, res) => {
+    const courseId = parseInt(req.params.id);
+    const course = courses.find(c => c.id === courseId);
+    if (!course) {
+        return res.status(404).send('Course not found');
+    }
+    course.name = req.body.name;
     res.json(courses);
 });
