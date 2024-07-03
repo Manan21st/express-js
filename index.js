@@ -2,6 +2,16 @@ const express = require('express');
 const app = express();
 
 app.use(express.json()); // Add this line to parse JSON data in the request body
+app.use(middleware);
+app.use(logger);
+function middleware(req, res, next) {
+    console.log('Logging');
+    next();
+}
+function logger(req, res, next) {
+    console.log(req.method, req.ip, req.hostname, new Date());
+    next();
+}
 
 let courses = [
         {id:1, name:'java'},
@@ -25,10 +35,6 @@ app.get('/', (req, res) => {
 
 app.get('/courses', (req, res) => {
     res.json(courses);
-});
-
-app.get('/instructors', (req, res) => {
-    res.json(instructors);
 });
 
 app.post('/courses', (req, res) => {
@@ -59,4 +65,3 @@ app.delete('/courses/:id', (req, res) => {
     courses.splice(courseIndex, 1);
     res.json(courses);
 });
-
